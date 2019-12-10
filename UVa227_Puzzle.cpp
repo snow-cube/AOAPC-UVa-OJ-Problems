@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdio>
+#include <cstring>
 using namespace std;
 
 char a[5][5];
@@ -8,14 +9,26 @@ int main() {
     char ch;
     int x, y;
     int kase = 0;
-    while (cin >> ch && ch != 'Z') {
+    ch = getchar();
+    while (ch != 'Z') {
+    	memset(a, 0, sizeof(a));
         bool flag = false;
         for (int i = 0; i < 5; i++)
             for (int j = 0; j < 5; j++) {
-                if (i == 0 && j == 0) a[i][j] = ch;
+                if (i == 0 && j == 0) {
+					a[i][j] = ch;
+					if (ch == ' ') {
+						x = i;
+						y = j;
+					}
+				}
                 else {
                     char c = getchar();
-                    if ((c < 'A' || c > 'Z') && c != ' ') {
+                    if (c == '\n' && j == 4) {
+                    	a[i][j] = ' ';
+                    	x = i;
+                    	y = j;
+					} else if ((c < 'A' || c > 'Z') && c != ' ') {
                         j--;
                     } else {
                         a[i][j] = c;
@@ -33,25 +46,25 @@ int main() {
             int obj_x = x, obj_y = y;
             switch (o) {
                 case 'A':
-                    if (x == 0)
+                    if (obj_x == 0)
                         flag = true;
                     else
                         obj_x--;
                     break;
                 case 'B':
-                    if (x == 4)
+                    if (obj_x == 4)
                         flag = true;
                     else
                         obj_x++;
                     break;
                 case 'L':
-                    if (y == 0)
+                    if (obj_y == 0)
                         flag = true;
                     else
                         obj_y--;
                     break;
                 case 'R':
-                    if (y == 4)
+                    if (obj_y == 4)
                         flag = true;
                     else
                         obj_y++;
@@ -73,10 +86,13 @@ int main() {
         } else {
             for (int i = 0; i < 5; i++) {
                 for (int j = 0; j < 5; j++)
-                    cout << a[i][j] << " ";
+                    cout << a[i][j] << (j == 4 ? "" : " ");
                 cout << endl;
             }
         }
+        
+	    while ((ch = getchar()) == '\n');
+//        getchar();
     }
 
     return 0;
